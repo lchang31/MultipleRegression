@@ -15,9 +15,24 @@ total_long<-group_by(total_long, Stimulus)
 total$features <- factor(total$features, levels = c("self", "others", "thing",
   "social_nonsocial", "mentalization", "visual", "auditory", "face", "action", "touch"))
 
-# Organize ROI
-total$ROI <-factor(total$ROI, levels = c("STG", "MTG", "TPJ","TP", "Precu", "aMPFC", "pMPFC",
-                                         "IFG", "IPS", "Auditory", "Visual"))
+# Organize ROI to display all ROI beta figures
+#total$ROI <-factor(total$ROI, levels = c("STG", "MTG", "TPJ","TP", "Precu", "aMPFC", "pMPFC",
+#                                         "IFG", "IPS", "Auditory", "Visual"))
+
+
+# comment out one of the ones below to produce figures of specific network
+# only show the social ROI
+#total$ROI <-factor(total$ROI, levels = c("STG", "MTG"))
+
+# only show the ToM ROI
+#total$ROI <-factor(total$ROI, levels = c("TPJ","TP", "Precu", "aMPFC", "pMPFC"))
+
+# only show the action observation ROI
+#total$ROI <-factor(total$ROI, levels = c("IFG", "IPS"))
+
+# only show the auditory visual ROI
+#total$ROI <-factor(total$ROI, levels = c("Auditory", "Visual"))
+
 
 #Remove rid of NA
 total <- total[complete.cases(total[ , 1]),]      
