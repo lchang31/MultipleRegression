@@ -47,9 +47,5 @@ for k = 1:n_features
     obs_tstat(counter,:) = obs_stat;
     pvalue_n(counter,:)= pvalue_corr;
 end
-    
-%% Apply FDR correction
-%load p values and h values
-[pvalue, obs_stat, rand_stat, pvalue_corr] = randomize_r(betavalues);
-[h, crit, adj_ci_cvrg, p_fdr]=fdr_bh(pvalue_n,.05);
+
 
