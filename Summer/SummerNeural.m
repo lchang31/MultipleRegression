@@ -116,6 +116,7 @@ end
 %% 2nd order RDM
 cc = cosmo_corr(average');
 figure();
+axis square
 imagesc(cc);
 
 % MDS Visualization
@@ -129,23 +130,21 @@ imagesc(cc);
  sensory = {'Auditory','Visual'};
 
 figure();
+axis square
 % General 2D plot (including auditory and Visual)
-subplot(2,2,1)
-plot(x(:,1), x(:,2), 'r.', 'MarkerSize', 20);
+plot(x(:,1), x(:,2), 'r.', 'MarkerSize', 40);
 text(x(:,1) + 0.025, x(:,2), masks);
 
 % General 3D plot (including auditory and Visual)
-subplot(2,2,2)
-plot3(y(:,1), y(:,2), y(:,3), 'r.', 'MarkerSize', 20);
+plot3(y(:,1), y(:,2), y(:,3), 'r.', 'MarkerSize', 40);
 text(y(:,1)+ 0.025, y(:,2), y(:,3), masks);
 
 % 2D visualization plot 
-subplot(2,2,3)
-plot(x(1:2,1), x(1:2,2), '.',  'Color',  [1, 0, 0], 'MarkerSize', 20);
+plot(x(1:2,1), x(1:2,2), '.',  'Color',  [1, 0, 0], 'MarkerSize', 40);
 hold on
-plot(x(3:7,1), x(3:7,2), '.', 'Color',  [47/256, 151/256, 102/256],  'MarkerSize', 20);
-plot(x(8:9,1), x(8:9,2), '.','Color',  [52/256, 106/256, 233/256], 'MarkerSize', 20);
-plot(x(10:11,1), x(10:11,2),  '.','Color',  [255/256, 188/256, 0], 'MarkerSize',20 );
+plot(x(3:7,1), x(3:7,2), '.', 'Color',  [47/256, 151/256, 102/256],  'MarkerSize', 40);
+plot(x(8:9,1), x(8:9,2), '.','Color',  [52/256, 106/256, 233/256], 'MarkerSize', 40);
+plot(x(10:11,1), x(10:11,2),  '.','Color',  [255/256, 188/256, 0], 'MarkerSize',40 );
 hold off
 text(x(1:2,1) + 0.025, x(1:2,2), social);
 text(x(3:7,1) + 0.025, x(3:7,2), mentalization);
@@ -171,27 +170,26 @@ masks = {'STG','MTG',...
     'IFG oper','IPS','Auditory',...
     'Visual', ...
     };
+
 n_masks = numel(masks);
 k = 1;
 counter = 0;
 for i= 1:n_masks
     m = k + 17;
-    cc = cosmo_corr((neural_dsms((k:m), :))');
-    z = triu(cc, 1);  %take the upper triangular matrix
-    z(z == 0) = NaN;  
-    r = z(~isnan(z));   %remove all the NaN
-    avgr = mean(r);
-    [pvalue_corr] = randomize_r(r);
-    if counter==0
-        p = zeros(n_masks, 1);
-        avg_r = zeros(n_masks, 1);
+   
+    for sub=1:18
+    neural_dsms_av=neural_dsms(k:m,:);
+    neural_dsms_av(sub,:) = [];
+    noise(:, sub)=corr((neural_dsms(k, :))',mean(neural_dsms_av)')
+
     end
-    counter = counter + 1;
-    p(counter,:)= pvalue_corr;
-    avg_r(counter, :) = avgr;
+   counter = counter + 1;
+   noise_all(counter,:)=noise;
+        
     k = m + 1;
 end
 
+    [pvalue, obs_stat, rand_stat, pvalue_corr] = randomize_r(noise_all');
 
 
 
